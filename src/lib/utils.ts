@@ -16,16 +16,3 @@ export function unsplash(id: string, width = 1200, height?: number) {
   if (height) params.set("h", String(height));
   return `https://images.unsplash.com/photo-${id}?${params.toString()}`;
 }
-
-export const contact = {
-  whatsapp: "5535997807306",
-  whatsappLabel: "(35) 99780-7306",
-  instagram: "estancia___modacountry",
-  email: "modacountryestancia@gmail.com",
-};
-
-export function whatsappLink(message: string) {
-  return `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(message)}`;
-}
-
-export const instagramLink = `https://instagram.com/${contact.instagram}`;

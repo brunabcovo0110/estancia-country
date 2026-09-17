@@ -1,6 +1,10 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** Endpoint opcional para o formulário de contato (ex.: Formspree). */
-  readonly VITE_FORM_ENDPOINT?: string;
+  readonly NEXT_PUBLIC_SUPABASE_URL: string;
+  readonly NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
 }

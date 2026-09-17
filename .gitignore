@@ -14,3 +14,7 @@ dist
 Thumbs.db
 .vscode/*
 !.vscode/extensions.json
+
+# Skills locais do Claude Code (não fazem parte do site)
+.claude/skills/
+skills-lock.json

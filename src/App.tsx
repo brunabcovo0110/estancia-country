@@ -3,7 +3,8 @@ import { ArrowUpRight, Clock, Instagram, Mail, MapPin, MessageCircle } from "luc
 
 import { LogoBadge, LogoHorizontal, Star } from "@/components/brand";
 import { ContactForm } from "@/components/ContactForm";
-import { contact, instagramLink, unsplash, whatsappLink } from "@/lib/utils";
+import { instagramLink, useContactSettings, whatsappLink } from "@/lib/contact-settings";
+import { unsplash } from "@/lib/utils";
 
 interface Channel {
   icon: LucideIcon;
@@ -13,19 +14,22 @@ interface Channel {
   external?: boolean;
 }
 
-const channels: Channel[] = [
-  {
-    icon: MessageCircle,
-    label: "WhatsApp",
-    value: contact.whatsappLabel,
-    href: whatsappLink("Olá! Vim pelo site da Estância Country."),
-    external: true,
-  },
-  { icon: Instagram, label: "Instagram", value: `@${contact.instagram}`, href: instagramLink, external: true },
-  { icon: Mail, label: "E-mail", value: contact.email, href: `mailto:${contact.email}` },
-];
-
 export default function App() {
+  // Dados de contato vêm do Supabase (tabela contact_settings).
+  const settings = useContactSettings();
+
+  const channels: Channel[] = [
+    {
+      icon: MessageCircle,
+      label: "WhatsApp",
+      value: settings.whatsapp_label,
+      href: whatsappLink(settings.whatsapp, "Olá! Vim pelo site da Estância Country."),
+      external: true,
+    },
+    { icon: Instagram, label: "Instagram", value: `@${settings.instagram}`, href: instagramLink(settings.instagram), external: true },
+    { icon: Mail, label: "E-mail", value: settings.email, href: `mailto:${settings.email}` },
+  ];
+
   return (
     <div className="min-h-screen bg-cream lg:grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
       {/* Foto com slogan: topo no celular, coluna fixa no desktop */}
@@ -94,9 +98,13 @@ export default function App() {
             <p className="flex gap-2 sm:gap-3">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-caramel" strokeWidth={1.3} />
               <span>
-                Seg. a sex., 9h às 18h
-                <br />
-                Sábados, 9h às 13h
+                {settings.hours_weekdays}
+                {settings.hours_saturday && (
+                  <>
+                    <br />
+                    {settings.hours_saturday}
+                  </>
+                )}
               </span>
             </p>
             <p className="flex gap-2 sm:gap-3">
@@ -120,7 +128,7 @@ export default function App() {
               Prefere <em>escrever</em>?
             </h2>
             <p className="mb-10 mt-4 text-earth/70">Deixe sua mensagem e retornamos por e-mail.</p>
-            <ContactForm />
+            <ContactForm subjects={settings.subjects} />
           </section>
         </div>
 

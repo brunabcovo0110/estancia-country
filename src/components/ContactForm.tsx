@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
 type FormValues = {
@@ -20,11 +21,10 @@ type Status = "idle" | "sending" | "success" | "error";
 
 const initialValues: FormValues = { name: "", email: "", phone: "", subject: "", message: "" };
 
-const subjects = ["Dúvidas", "Pedidos e entregas", "Parcerias", "Outro assunto"];
-
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {};
   if (values.name.trim().length < 2) errors.name = "Informe o seu nome.";
+  else if (values.name.trim().length > 120) errors.name = "Use no máximo 120 caracteres.";
   if (!values.email.trim()) errors.email = "Informe o seu e-mail.";
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email.trim())) errors.email = "Digite um e-mail válido.";
   const digits = values.phone.replace(/\D/g, "");
@@ -42,22 +42,16 @@ function formatPhone(value: string) {
   return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
 }
 
-/**
- * Envia a mensagem. Se VITE_FORM_ENDPOINT estiver definido (ex.: Formspree),
- * faz um POST real; caso contrário, simula o envio para demonstração.
- */
+/** Grava a mensagem na tabela contact_messages do Supabase (inserção pública, sem leitura). */
 async function sendMessage(values: FormValues) {
-  const endpoint = import.meta.env.VITE_FORM_ENDPOINT as string | undefined;
-  if (!endpoint) {
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    return;
-  }
-  const res = await fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify(values),
+  const { error } = await supabase.from("contact_messages").insert({
+    name: values.name.trim(),
+    email: values.email.trim().toLowerCase(),
+    phone: values.phone.trim() || null,
+    subject: values.subject,
+    message: values.message.trim(),
   });
-  if (!res.ok) throw new Error("Falha no envio");
+  if (error) throw error;
 }
 
 function FieldError({ id, message }: { id: string; message?: string }) {
@@ -68,11 +62,13 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
-export function ContactForm() {
+export function ContactForm({ subjects }: { subjects: string[] }) {
   const [values, setValues] = useState<FormValues>(initialValues);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<Status>("idle");
+  // Campo invisível para pessoas; robôs de spam costumam preenchê-lo.
+  const [honeypot, setHoneypot] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -105,9 +101,10 @@ export function ContactForm() {
     }
     setStatus("sending");
     try {
-      await sendMessage(values);
+      if (!honeypot) await sendMessage(values);
       setStatus("success");
-    } catch {
+    } catch (err) {
+      console.error("Erro ao enviar mensagem:", err);
       setStatus("error");
     }
   };
@@ -143,10 +140,14 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-5">
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label htmlFor="website">Deixe este campo em branco</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} />
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <Label htmlFor="name">Nome *</Label>
-          <Input id="name" name="name" autoComplete="name" placeholder="Seu nome" value={values.name} onChange={handleChange} onBlur={() => handleBlur("name")} aria-invalid={!!shown("name")} aria-describedby="name-error" />
+          <Input id="name" name="name" autoComplete="name" placeholder="Seu nome" maxLength={120} value={values.name} onChange={handleChange} onBlur={() => handleBlur("name")} aria-invalid={!!shown("name")} aria-describedby="name-error" />
           <FieldError id="name-error" message={shown("name")} />
         </div>
         <div>
