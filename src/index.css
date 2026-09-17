@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 38 47% 93%;
+    --foreground: 25 35% 12%;
+    --popover: 40 50% 96%;
+    --popover-foreground: 25 35% 12%;
+    --primary: 26 47% 25%;
+    --primary-foreground: 38 47% 93%;
+    --secondary: 38 35% 88%;
+    --secondary-foreground: 26 47% 25%;
+    --muted: 38 30% 88%;
+    --muted-foreground: 26 18% 38%;
+    --accent: 28 72% 41%;
+    --accent-foreground: 38 47% 96%;
+    --destructive: 356 56% 27%;
+    --destructive-foreground: 38 47% 96%;
+    --border: 30 22% 80%;
+    --input: 30 22% 72%;
+    --ring: 28 72% 41%;
+    --radius: 0rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cream font-sans text-ink antialiased;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif font-normal;
+  }
+
+  ::selection {
+    background: #5c3a21;
+    color: #f5efe4;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto w-full max-w-[1440px] px-5 md:px-10 lg:px-16;
+  }
+  .eyebrow {
+    @apply font-sans text-[0.68rem] font-medium uppercase tracking-widest2 text-caramel;
+  }
+  .display {
+    @apply font-serif font-light leading-[0.95] tracking-[-0.01em];
+  }
+  .img-earthy {
+    filter: sepia(0.28) saturate(0.85) contrast(1.02);
+  }
+  .img-mono {
+    filter: grayscale(1) contrast(1.05);
+  }
+  .link-underline {
+    @apply relative;
+  }
+  .link-underline::after {
+    content: "";
+    @apply absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-current transition-transform duration-500 ease-out;
+  }
+  .link-underline:hover::after,
+  .link-underline[aria-current="page"]::after {
+    @apply origin-left scale-x-100;
+  }
+  .prose-estancia p {
+    @apply mb-6 text-[1.05rem] leading-[1.85] text-earth-dark/90;
+  }
+  .prose-estancia h2 {
+    @apply mb-5 mt-14 font-serif text-3xl text-earth md:text-4xl;
+  }
+  .prose-estancia blockquote {
+    @apply my-12 border-l border-caramel pl-6 font-serif text-2xl italic leading-snug text-earth md:text-3xl;
+  }
+  .prose-estancia ul {
+    @apply mb-6 space-y-2 pl-5 text-earth-dark/90;
+  }
+  .prose-estancia li {
+    @apply list-disc leading-relaxed marker:text-caramel;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

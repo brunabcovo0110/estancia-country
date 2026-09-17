@@ -1,0 +1,16 @@
+# Dependências e builds
+node_modules
+dist
+*.tsbuildinfo
+
+# Variáveis de ambiente (ex.: VITE_FORM_ENDPOINT)
+.env
+.env.*
+!.env.example
+*.local
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
