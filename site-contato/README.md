@@ -23,3 +23,8 @@ Sem configuração, o envio é simulado. Para receber as mensagens, crie um form
 ```
 VITE_FORM_ENDPOINT=https://formspree.io/f/SEU_ID
 ```
+
+## Deploy na Vercel
+
+Importe o repositório na Vercel e defina **Root Directory = `site-contato`**. O restante já está em `vercel.json`.
+Para o formulário, adicione `VITE_FORM_ENDPOINT` em *Settings → Environment Variables*.

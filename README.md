@@ -39,7 +39,16 @@ e defina a variável em um arquivo `.env.local`:
 VITE_FORM_ENDPOINT=https://formspree.io/f/SEU_ID
 ```
 
-## Deploy
+## Deploy na Vercel
 
-Como é uma SPA com React Router, configure o servidor para redirecionar todas as rotas para `index.html`
-(na Vercel e na Netlify isso já é padrão ou exige um único arquivo de rewrite).
+O repositório tem **dois sites**; crie um projeto na Vercel para cada um, importando o mesmo repositório:
+
+| Projeto | Root Directory |
+| --- | --- |
+| Site principal | `./` (raiz) |
+| Site de contato | `site-contato` |
+
+A Vercel detecta Vite automaticamente; as configurações ficam em `vercel.json` (build, pasta `dist`,
+redirecionamento das rotas para o React Router e cache dos arquivos estáticos).
+Para o formulário enviar de verdade, adicione `VITE_FORM_ENDPOINT` em *Settings → Environment Variables*
+(veja `.env.example`) e faça um novo deploy.
