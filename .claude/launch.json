@@ -1,33 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "dev",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev",
-        "--",
-        "--port",
-        "5173",
-        "--strictPort"
-      ],
-      "port": 5173
-    },
-    {
-      "name": "contato",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "site-contato",
-        "run",
-        "dev",
-        "--",
-        "--port",
-        "5174",
-        "--strictPort"
-      ],
-      "port": 5174
-    }
+    { "name": "contato", "runtimeExecutable": "npm", "runtimeArgs": ["run", "dev", "--", "--port", "5174", "--strictPort"], "port": 5174 }
   ]
 }

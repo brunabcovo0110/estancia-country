@@ -28,6 +28,7 @@ export default {
       fontFamily: {
         serif: ['"Cormorant Garamond"', "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        western: ["Rye", "Georgia", "serif"],
       },
       letterSpacing: { widest2: "0.3em" },
       transitionDuration: { 1100: "1100ms", 1400: "1400ms" },
