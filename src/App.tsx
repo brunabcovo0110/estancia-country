@@ -1,8 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import { ArrowUpRight, Clock, Instagram, Mail, MapPin, MessageCircle } from "lucide-react";
 
-import { LogoBadge, LogoHorizontal, Star } from "@/components/brand";
-import { ContactForm } from "@/components/ContactForm";
+import { LogoBadge, LogoHorizontal } from "@/components/brand";
 import { instagramLink, useContactSettings, whatsappLink } from "@/lib/contact-settings";
 import { unsplash } from "@/lib/utils";
 
@@ -116,20 +115,6 @@ export default function App() {
               </span>
             </p>
           </div>
-
-          {/* Formulário */}
-          <section className="mt-20 animate-fade-up [animation-delay:350ms]" aria-labelledby="form-title">
-            <div className="mb-10 flex items-center gap-4 text-caramel" aria-hidden="true">
-              <span className="h-px flex-1 bg-current opacity-40" />
-              <Star className="text-gold" />
-              <span className="h-px flex-1 bg-current opacity-40" />
-            </div>
-            <h2 id="form-title" className="display text-4xl text-earth md:text-5xl">
-              Prefere <em>escrever</em>?
-            </h2>
-            <p className="mb-10 mt-4 text-earth/70">Deixe sua mensagem e retornamos por e-mail.</p>
-            <ContactForm subjects={settings.subjects} />
-          </section>
         </div>
 
         <footer className="mx-auto mt-20 flex w-full max-w-2xl flex-col items-center gap-6 border-t border-earth/10 pt-10 text-center text-xs text-earth/50 sm:flex-row sm:justify-between sm:text-left">

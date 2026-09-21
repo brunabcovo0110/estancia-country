@@ -1,6 +1,6 @@
 # Estância Country — site de contato
 
-Página única com os canais de contato e o formulário (sem produtos).
+Página única com os canais de contato: WhatsApp, Instagram e e-mail (sem produtos).
 React + Vite + TypeScript + Tailwind CSS + shadcn/ui + Supabase.
 
 ```bash
@@ -23,16 +23,16 @@ Use sempre a chave **publicável**; nunca coloque a chave secreta/service_role n
 
 ## Supabase
 
-Sem login: qualquer visitante pode ver os dados de contato e enviar o formulário.
+Sem login: qualquer visitante pode ver os dados de contato.
 
 | Tabela | Visitante pode | Uso |
 | --- | --- | --- |
-| `contact_settings` | ler | WhatsApp, Instagram, e-mail, horários e assuntos do formulário (linha única) |
-| `contact_messages` | só inserir (não lê) | Mensagens enviadas pelo formulário |
+| `contact_settings` | ler | WhatsApp, Instagram, e-mail e horários exibidos no site (linha única) |
+| `contact_messages` | só inserir (não lê) | Mensagens do antigo formulário (removido do site; tabela mantida) |
 
 - **Ver mensagens:** painel do Supabase → *Table Editor* → `contact_messages`.
   A coluna `status` pode ser marcada como `respondido` ou `arquivado`.
-- **Mudar contatos, horários ou assuntos:** *Table Editor* → `contact_settings`. O site atualiza sozinho.
+- **Mudar contatos ou horários:** *Table Editor* → `contact_settings`. O site atualiza sozinho.
 - A estrutura do banco está em `supabase/migrations/`. Tipos TypeScript em `src/lib/database.types.ts`.
 
 ## Onde editar
